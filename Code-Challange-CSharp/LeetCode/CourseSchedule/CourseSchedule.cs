@@ -12,70 +12,11 @@ namespace Code_Challange_CSharp.LeetCode
     {
         public static bool CanFinish(int numCourses, int[][] prerequisites)
         {
-            // example: [[0,1],[2,3],[1,2],[3,0]]
-            // solution
-            // create variable for storing intial prerequistites.
-            var initialPrerequisites = prerequisites;
-            // creae a dictionary  <key: index-zero-number value: keep updating to next prerequisites in the road >
-            var dic = new Dictionary<int , int?[]>(); // exp: { 1: {2} , 2: {3 , 0} }
-            for(int i = 0; i < numCourses; i++)
-            {
-                dic.Add(i , new int?[numCourses]);
-            }
-            
-            bool result = true;
-
-            for (int i = 0; i < initialPrerequisites.Length; i++)
-            {
-                int[] element = initialPrerequisites[i];
-                if (element[0] == element[1])
-                {
-                    result = false;
-                    break;
-                }
-
-                dic[element[0]][element[1]] = element[1];
-                for(int j = 0; j < numCourses; j++)
-                {
-                    if (dic[element[1]][j] != null)
-                    {
-                        if (j == element[0])
-                        {
-                            result = false; break;
-                        }
-                        dic[element[0]][j] = j;
-                    }
-                }
-                if (result == false)
-                {
-                    break;
-                }
-
-                foreach(var item in dic)
-                {
-                    if (item.Value.Contains(element[0]))
-                    {
-                        for(int j = 0; j < numCourses; j++)
-                        {
-                            if (dic[element[0]][j] != null)
-                            {
-                                if (item.Key == j)
-                                {
-                                    result = false; break;
-                                }
-                                item.Value[j] = j;
-                            }
-                        }
-                    }
-                }
-                if (result == false)
-                {
-                    break;
-                }
-            }
-
+            bool result = CanFinishWithList(numCourses , prerequisites);
             return result;
         }
+
+
 
         public static bool CanFinishWithListEfficient(int numCourses, int[][] prerequisites)
         {
@@ -141,9 +82,6 @@ namespace Code_Challange_CSharp.LeetCode
             }
             return result;
         }
-
-
-
         public static bool CanFinishWithList(int numCourses, int[][] prerequisites)
         {
             // example: [[0,1],[2,3],[1,2],[3,0]]
